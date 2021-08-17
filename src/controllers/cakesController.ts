@@ -17,10 +17,10 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
-                    const cakes = await business.cakesManager().getCake(cakeId);
+                    const cake = await business.cakesManager().getCake(cakeId);
 
                     const result = {
-                        files: cakes,
+                        cake
                     };
 
                     res.status(HttpStatusCodes.OK).json(result);
@@ -36,7 +36,7 @@ class CakesController {
                     const cakes = await business.cakesManager().getCakes();
 
                     const result = {
-                        cakes: cakes,
+                        cakes
                     };
 
                     res.status(HttpStatusCodes.OK).json(result);
