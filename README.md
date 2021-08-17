@@ -14,10 +14,11 @@
  	password: secret
 
 
+prerequsites
 
+nope and npm installed 
 
  set up node / typescript:
 
  https://ultimatecourses.com/blog/setup-typescript-nodejs-express
 
- 
