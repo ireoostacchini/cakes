@@ -1,6 +1,9 @@
 interface CakeEntity {
-    id: string;
+    id?: number;
     name: string;
-  }
-  
-  export default CakeEntity;
+    comment: string;
+    imageUrl: string;
+    yumFactor: number;
+}
+
+export default CakeEntity;

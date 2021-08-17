@@ -1,6 +1,7 @@
-interface CakeDto {
-    id: string;
-    name: string;
-  }
-  
-  export default CakeDto;
+import CreateCakeDto from "./CreateCakeDto";
+
+interface CakeDto extends CreateCakeDto {
+    id?: number;
+}
+
+export default CakeDto;
