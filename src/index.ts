@@ -7,6 +7,7 @@ import { TYPES } from './constants/types';
 import IBusiness from './business/IBusiness';
 import Controllers from './controllers';
 import container from './inversify.config';
+import { errorHandler } from './helpers/errorHandler';
 
 dotenv.config();
 
@@ -24,6 +25,8 @@ app.use("/api", router);
 const business = container.get<IBusiness>(TYPES.IBusiness);
 
 new Controllers().registerRoutes(router, business);
+
+app.use(errorHandler);
 
 
 // ## It is not safe to resume normal operation after 'uncaughtException'. Restart the process carefully using a process management tool like PM2

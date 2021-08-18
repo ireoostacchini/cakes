@@ -1,3 +1,4 @@
+import { ErrorCode } from "../constants/ErrorCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import CakeEntity from "../entities/CakeEntity";
 import DbConnectionManager from "./dbConnectionManager";
@@ -37,9 +38,8 @@ class CakesRepository {
 
         const result = cakes.find(x => x.id === id);
 
-        if (!id) {
-            //TODO: error code
-            throw new Error("Cake not found");
+        if (!result) {
+            throw new Error(ErrorCode.NotFound);
         }
 
         return result;

@@ -3,6 +3,7 @@ import CakeDto from "../dto/CakeDto";
 import IDb from "../db/IDb";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { cakeEntityToDto } from "../mappers/cakeMapper";
+import { ErrorCode } from "../constants/ErrorCode";
 
 class CakesManager {
     private _db: IDb;

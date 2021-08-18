@@ -1,11 +1,14 @@
 import express from "express";
 import IBusiness from "../business/IBusiness";
-import { HttpStatusCodes } from "../constants/HttpStatusCodes";
+import { ErrorDtoCode } from "../constants/ErrorDtoCode";
+import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
+import { createErrorResponseDto } from "../helpers/errorResponseDtoFactory";
 
 interface CreateCakeRequestDto {
     cake: CreateCakeDto;
 }
+
 
 class CakesController {
     registerRoutes(router: any, business: IBusiness) {
@@ -17,13 +20,25 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
+                    if (isNaN(cakeId)) {
+
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `cakeId parameter of ${req.params.id} was invalid`);
+
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(error);
+
+                    }
+
+                    console.log(cakeId);
+
                     const cake = await business.cakesManager().getCake(cakeId);
 
                     const result = {
                         cake
                     };
 
-                    res.status(HttpStatusCodes.OK).json(result);
+                    res.status(HttpStatusCode.OK).json(result);
                 } catch (err) {
                     next(err);
                 }
@@ -39,7 +54,7 @@ class CakesController {
                         cakes
                     };
 
-                    res.status(HttpStatusCodes.OK).json(result);
+                    res.status(HttpStatusCode.OK).json(result);
 
                 } catch (err) {
                     next(err);
@@ -58,7 +73,7 @@ class CakesController {
                     const cakes = await business.cakesManager().deleteCake(cakeId);
 
 
-                    res.status(HttpStatusCodes.OK).json({});
+                    res.status(HttpStatusCode.OK).json({});
                 } catch (err) {
                     next(err);
                 }
@@ -82,7 +97,7 @@ class CakesController {
                         cake: addedCake,
                     };
 
-                    res.status(HttpStatusCodes.CREATED).json(result);
+                    res.status(HttpStatusCode.CREATED).json(result);
                 } catch (err) {
                     next(err);
                 }
