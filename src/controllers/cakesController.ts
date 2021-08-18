@@ -4,7 +4,7 @@ import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { createErrorResponseDto } from "../helpers/errorResponseDtoFactory";
-import { validateRequiredProperty } from "../helpers/validation";
+import { validateUrl, validateRequiredProperty } from "../helpers/validation";
 
 interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
@@ -92,7 +92,7 @@ class CakesController {
             "/cakes",
             async (req: CreateCakeRequest, res: Response, next: any) => {
                 try {
-                    const cake = req?.body?.cake;
+                    const cake: CreateCakeDto = req?.body?.cake;
 
                     //TODO: find a nicer way to validate!
 
@@ -121,6 +121,18 @@ class CakesController {
                                 .status(HttpStatusCode.BAD_REQUEST)
                                 .json(error);
                         }
+                    }
+
+                    //validate imageUrl 
+                    try {
+                        validateUrl(cake.imageUrl)
+                    } catch (err) {
+
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `invalid parameter: imageUrl must be a valid URL`);
+
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(error);
                     }
 
                     //validate yumFactor - must be 1 to 5

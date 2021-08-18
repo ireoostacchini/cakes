@@ -1,4 +1,5 @@
 export enum ErrorCode {
   NotFound = "NotFound",
-  ParameterMissing = "ParameterMissing"
+  ParameterMissing = "ParameterMissing",
+  InvalidParameter = "InvalidParameter"
 }

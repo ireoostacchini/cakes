@@ -1,3 +1,4 @@
+import { URL } from "url";
 import { ErrorCode } from "../constants/ErrorCode";
 
 export const validateRequiredProperty = (
@@ -6,5 +7,13 @@ export const validateRequiredProperty = (
 ): void => {
     if (!obj[propertyName]) {
         throw new Error(ErrorCode.ParameterMissing);
+    }
+};
+
+export const validateUrl = (url: string) => {
+    try {
+        new URL(url);
+    } catch (e) {
+        throw new Error(ErrorCode.InvalidParameter);
     }
 };
