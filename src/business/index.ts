@@ -1,6 +1,5 @@
 import { injectable, inject } from "inversify";
 import "reflect-metadata";
-
 import CakesManager from "./cakesManager";
 import Db from "../db";
 import IBusiness from "./IBusiness";

@@ -1,5 +1,4 @@
 import { ErrorCode } from "../constants/ErrorCode";
-import CreateCakeDto from "../dto/CreateCakeDto";
 import CakeEntity from "../entities/CakeEntity";
 import DbConnectionManager from "./dbConnectionManager";
 

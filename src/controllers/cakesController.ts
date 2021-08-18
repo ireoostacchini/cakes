@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import IBusiness from "../business/IBusiness";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
