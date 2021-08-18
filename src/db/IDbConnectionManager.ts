@@ -1,5 +1,5 @@
 interface IDbConnectionManager {
-    getKnex() :any
+    getKnex(): any
 }
 
 export default IDbConnectionManager;
