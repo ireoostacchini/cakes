@@ -63,11 +63,11 @@ class CakesRepository {
             "yumFactor": cake.yumFactor,
         }
 
-        const xxx = await knex("cakes").insert(cake2);
+        const ids = await knex("cakes").insert(cake2).returning("id");
 
         const result: CakeEntity =
         {
-            id: 1111,
+            id: ids[0],
             name: cake.name,
             comment: cake.comment,
             imageUrl: cake.imageUrl,
