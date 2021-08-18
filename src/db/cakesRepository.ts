@@ -15,7 +15,7 @@ class CakesRepository {
         const cakes = await knex("cakes");
 
         const result = cakes.map((cake: any) => {
-            //TODO:mapper?
+
             const entity: CakeEntity = {
                 id: cake.id,
                 name: cake.name,

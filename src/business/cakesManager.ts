@@ -2,6 +2,7 @@ import CakeEntity from "../entities/CakeEntity";
 import CakeDto from "../dto/CakeDto";
 import IDb from "../db/IDb";
 import CreateCakeDto from "../dto/CreateCakeDto";
+import { cakeEntityToDto } from "../mappers/cakeMapper";
 
 class CakesManager {
     private _db: IDb;
@@ -13,16 +14,7 @@ class CakesManager {
         const entities = await this._db.cakesRepository().getCakes();
 
         const dtos = entities.map((entity: CakeEntity) => {
-            //TODO: mapper?
-            const dto: CakeDto = {
-                id: entity.id,
-                name: entity.name,
-                comment: entity.comment,
-                imageUrl: entity.imageUrl,
-                yumFactor: entity.yumFactor
-            };
-
-            return dto;
+            return cakeEntityToDto(entity);
         });
 
         return dtos;
@@ -31,13 +23,7 @@ class CakesManager {
     async getCake(id: number): Promise<CakeDto> {
         const entity = await this._db.cakesRepository().getCake(id);
 
-        const dto: CakeDto = {
-            id: entity.id,
-            name: entity.name,
-            comment: entity.comment,
-            imageUrl: entity.imageUrl,
-            yumFactor: entity.yumFactor
-        };
+        const dto = cakeEntityToDto(entity);
 
         return dto;
     }

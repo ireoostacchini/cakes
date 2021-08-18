@@ -6,7 +6,7 @@ import { injectable } from "inversify";
 @injectable()
 class DbConnectionManager implements IDbConnectionManager {
 
-  //TODO: separate knex instance per request? the connections would still mount up
+  //we reuse one connection for all requests - otherwise open conections mount up
   static knexConfig = knex({
     client: "pg",
     connection: {
