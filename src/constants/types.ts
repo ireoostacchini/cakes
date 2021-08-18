@@ -1,7 +1,5 @@
-const TYPES = {
-    IDbConnectionManager: "IDbConnectionManager",
-    IDb: "IDb",
-    IBusiness: "IBusiness"
-  };
-  
-  export { TYPES };
+export enum Types {
+  IDbConnectionManager = "IDbConnectionManager",
+  IDb = "IDb",
+  IBusiness = "IBusiness"
+}

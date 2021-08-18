@@ -4,11 +4,12 @@ import Business from "./business";
 import IDb from "./db/IDb";
 import Db from "./db";
 import DbConnectionManager from "./db/dbConnectionManager";
-import { TYPES } from "./constants/types";
+import { Types } from "./constants/types";
+
 
 const container = new Container();
-container.bind<IBusiness>(TYPES.IBusiness).to(Business);
-container.bind<IDb>(TYPES.IDb).to(Db);
-container.bind<DbConnectionManager>(TYPES.IDbConnectionManager).to(DbConnectionManager);
+container.bind<IBusiness>(Types.IBusiness).to(Business);
+container.bind<IDb>(Types.IDb).to(Db);
+container.bind<DbConnectionManager>(Types.IDbConnectionManager).to(DbConnectionManager);
 
 export default container;

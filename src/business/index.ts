@@ -5,13 +5,13 @@ import CakesManager from "./cakesManager";
 import Db from "../db";
 import IBusiness from "./IBusiness";
 import IDb from "../db/IDb";
-import { TYPES } from "../constants/types";
+import { Types } from "../constants/types";
 
 @injectable()
 class Business implements IBusiness {
   private _db: Db;
 
-  constructor(@inject(TYPES.IDb) db: IDb) {
+  constructor(@inject(Types.IDb) db: IDb) {
     this._db = db;
   }
 
