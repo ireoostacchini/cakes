@@ -1,5 +1,6 @@
 export enum ErrorDtoCode {
   NotFound = "NotFound",
   ParameterMissing = "ParameterMissing",
-  InvalidParameter = "InvalidParameter"
+  InvalidParameter = "InvalidParameter",
+  InvalidRequest = "InvalidRequest"
 }

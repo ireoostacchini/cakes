@@ -4,6 +4,7 @@ import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { createErrorResponseDto } from "../helpers/errorResponseDtoFactory";
+import { validateRequiredProperty } from "../helpers/validation";
 
 interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
@@ -21,7 +22,7 @@ class CakesController {
 
                     if (isNaN(cakeId)) {
 
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `cakeId parameter of ${req.params.id} was invalid`);
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `id parameter of ${req.params.id} was invalid`);
 
                         return res
                             .status(HttpStatusCode.BAD_REQUEST)
@@ -69,6 +70,16 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
+                    if (isNaN(cakeId)) {
+
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `id parameter of ${req.params.id} was invalid`);
+
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(error);
+
+                    }
+
                     const cakes = await business.cakesManager().deleteCake(cakeId);
 
                     res.status(HttpStatusCode.OK).json({});
@@ -81,15 +92,49 @@ class CakesController {
             "/cakes",
             async (req: CreateCakeRequest, res: Response, next: any) => {
                 try {
+                    const cake = req?.body?.cake;
 
-                    const cake2 = {
-                        "name": "cake.name",
-                        "comment": "cake.comment",
-                        "imageUrl": "cake.imageUrl",
-                        "yumFactor": 2,
+                    //TODO: find a nicer way to validate! I just didn't have time
+
+                    //validate top-level object
+                    if (!cake) {
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidRequest, "invalid request - top-level 'cake' object required");
+
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(error);
                     }
 
-                    const addedCake = await business.cakesManager().addCake(cake2);
+                    //validate required params 
+                    for (const paramName of [
+                        "name",
+                        "comment",
+                        "imageUrl",
+                        "yumFactor"
+                    ]) {
+                        try {
+                            validateRequiredProperty(cake, paramName);
+                        } catch (err) {
+                            const error = createErrorResponseDto(ErrorDtoCode.ParameterMissing, `parameter missing: ${paramName}`);
+
+                            return res
+                                .status(HttpStatusCode.BAD_REQUEST)
+                                .json(error);
+                        }
+                    }
+
+                    //validate yumFactor - must be 1 to 5
+                    const yumFactor = Number(cake.yumFactor);
+
+                    if (isNaN(yumFactor) || yumFactor < 1 || yumFactor > 5) {
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `invalid parameter: yumFactor must be netween 1 and 5`);
+
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(error);
+                    }
+
+                    const addedCake = await business.cakesManager().addCake(cake);
 
                     const result = {
                         cake: addedCake,
