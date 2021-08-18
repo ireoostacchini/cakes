@@ -94,7 +94,9 @@ class CakesController {
                 try {
                     const cake = req?.body?.cake;
 
-                    //TODO: find a nicer way to validate! I just didn't have time
+                    throw new Error("Q");
+
+                    //TODO: find a nicer way to validate!
 
                     //validate top-level object
                     if (!cake) {

@@ -1,7 +1,9 @@
+import { config } from "dotenv";
 import { ErrorRequestHandler } from "express";
 import { ErrorCode } from "../constants/ErrorCode";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
+import { isDevelopment } from "./configHelper";
 import { createErrorResponseDto } from "./errorResponseDtoFactory";
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
@@ -13,9 +15,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     }
 
     //if we haven't explicitly returned an error, don't expose the problem to consumers
-
-    //TODO: hide message in prod
     return res.status(err.statusCode || HttpStatusCode.INTERNAL_ERROR).json({
-        message: err.message || "Sorry, we seem to have a problem. Please try again."
+        message: isDevelopment() ? err.message : "Sorry, we seem to have a problem. Please try again."
     });
 };
