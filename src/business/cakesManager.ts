@@ -30,12 +30,6 @@ class CakesManager {
     }
 
     async deleteCake(id: number): Promise<void> {
-        const entity = await this._db.cakesRepository().getCake(id);
-
-        //if not found, ignore - idempotency for deletion
-        if (!entity) {
-            return;
-        }
 
         await this._db.cakesRepository().deleteCake(id);
     }

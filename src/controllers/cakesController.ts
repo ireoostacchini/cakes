@@ -1,21 +1,20 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import IBusiness from "../business/IBusiness";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { createErrorResponseDto } from "../helpers/errorResponseDtoFactory";
 
-interface CreateCakeRequestDto {
+interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
 }
-
 
 class CakesController {
     registerRoutes(router: any, business: IBusiness) {
 
         router.get(
             "/cakes/:id",
-            async (req: express.Request, res: express.Response, next: any) => {
+            async (req: Request, res: Response, next: any) => {
                 try {
 
                     const cakeId = Number(req.params.id);
@@ -46,7 +45,7 @@ class CakesController {
 
         router.get(
             "/cakes",
-            async (req: express.Request, res: express.Response, next: any) => {
+            async (req: Request, res: Response, next: any) => {
                 try {
                     const cakes = await business.cakesManager().getCakes();
 
@@ -65,13 +64,12 @@ class CakesController {
 
         router.delete(
             "/cakes/:id",
-            async (req: express.Request, res: express.Response, next: any) => {
+            async (req: Request, res: Response, next: any) => {
                 try {
 
                     const cakeId = Number(req.params.id);
 
                     const cakes = await business.cakesManager().deleteCake(cakeId);
-
 
                     res.status(HttpStatusCode.OK).json({});
                 } catch (err) {
@@ -81,7 +79,7 @@ class CakesController {
 
         router.post(
             "/cakes",
-            async (req: CreateCakeRequestDto, res: express.Response, next: any) => {
+            async (req: CreateCakeRequest, res: Response, next: any) => {
                 try {
 
                     const cake2 = {
