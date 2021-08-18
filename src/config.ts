@@ -34,21 +34,25 @@ const config = convict({
       doc: "Database host name/IP",
       format: "*",
       default: "127.0.0.1",
+      env: "DB_HOST"
     },
     name: {
       doc: "Database name",
       format: String,
       default: "",
+      env: "DB_NAME"
     },
     user: {
       doc: "Database user name",
       format: String,
       default: "",
+      env: "DB_USER"
     },
     password: {
       doc: "Database password",
       format: String,
       default: "",
+      env: "DB_PASSWORD"
     },
   },
 });
