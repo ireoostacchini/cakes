@@ -24,8 +24,9 @@ const getTestCakes = (): CakeDto[] => {
 };
 
 describe("cakeManager", () => {
-    it("should ", async () => {
+    it("should get cakes", async () => {
 
+        //arrange
         const expectedCakes = getTestCakes();
 
         const dbConnectionManager = { getKnex: () => undefined };
@@ -41,9 +42,36 @@ describe("cakeManager", () => {
 
         const manager = new CakesManager(db);
 
+        //act
         const cakes = await manager.getCakes();
 
+        //assert
         expect(cakes).toEqual(expectedCakes);
+    });
+
+    it("should get cake by id", async () => {
+
+        //arrange
+        const expectedCakes = getTestCakes();
+
+        const dbConnectionManager = { getKnex: () => undefined };
+
+        const repository = new CakesRepository(dbConnectionManager);
+
+        repository.getCake = jest.fn((id: number) => Promise.resolve(expectedCakes[0]));
+
+        const db: IDb = {
+            dbConnectionManager,
+            cakesRepository: () => repository
+        }
+
+        const manager = new CakesManager(db);
+
+        //act
+        const cake = await manager.getCake(expectedCakes[0].id || 0);
+
+        //assert
+        expect(cake).toEqual(expectedCakes[0]);
 
     });
 });
