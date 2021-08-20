@@ -56,14 +56,14 @@ class CakesRepository {
 
         const knex = this._dbConnectionManager.getKnex();
 
-        const cake2 = {
+        const cakeInfo = {
             "name": cake.name,
             "comment": cake.comment,
             "imageUrl": cake.imageUrl,
             "yumFactor": cake.yumFactor,
         }
 
-        const ids = await knex("cakes").insert(cake2).returning("id");
+        const ids = await knex("cakes").insert(cakeInfo).returning("id");
 
         const result: CakeEntity =
         {
