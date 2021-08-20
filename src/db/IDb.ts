@@ -1,8 +1,9 @@
 import CakesRepository from "./cakesRepository";
 import DbConnectionManager from "./dbConnectionManager";
+import IDbConnectionManager from "./IDbConnectionManager";
 
 interface IDb {
-  dbConnectionManager: DbConnectionManager;
+  dbConnectionManager: IDbConnectionManager;
 
   cakesRepository(): CakesRepository;
 }

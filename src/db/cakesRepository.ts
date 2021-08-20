@@ -1,11 +1,12 @@
 import { ErrorCode } from "../constants/ErrorCode";
 import CakeEntity from "../entities/CakeEntity";
 import DbConnectionManager from "./dbConnectionManager";
+import IDbConnectionManager from "./IDbConnectionManager";
 
 class CakesRepository {
-    private _dbConnectionManager: DbConnectionManager;
+    private _dbConnectionManager: IDbConnectionManager;
 
-    constructor(dbConnectionManager: DbConnectionManager) {
+    constructor(dbConnectionManager: IDbConnectionManager) {
         this._dbConnectionManager = dbConnectionManager;
     }
 
@@ -35,7 +36,7 @@ class CakesRepository {
         const knex = this._dbConnectionManager.getKnex();
         const cakes = await knex("cakes");
 
-        const result = cakes.find(x => x.id === id);
+        const result = cakes.find((x: { id: number; }) => x.id === id);
 
         if (!result) {
             throw new Error(ErrorCode.NotFound);
