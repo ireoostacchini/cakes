@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/ireoostacchini/cakes#readme",
   "dependencies": {
+    "@types/jest": "^27.0.1",
     "body-parser": "^1.19.0",
     "convict": "^5.2.1",
     "convict-format-with-validator": "^6.2.0",
@@ -41,7 +42,6 @@
     "@types/body-parser": "^1.19.1",
     "@types/convict": "^6.1.1",
     "@types/express": "^4.17.13",
-    "@types/jest": "^27.0.1",
     "@types/method-override": "0.0.32",
     "@types/node": "^16.6.1",
     "concurrently": "^6.2.1",
