@@ -45,6 +45,7 @@
     "@types/node": "^16.6.1",
     "concurrently": "^6.2.1",
     "jest": "^27.0.6",
+    "moq.ts": "^7.3.4",
     "nodemon": "^2.0.12",
     "ts-jest": "^27.0.5"
   }
