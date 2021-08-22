@@ -7,7 +7,7 @@ import IBusiness from './business/IBusiness';
 import Controllers from './controllers';
 import container from './inversify.config';
 import { errorHandler } from './helpers/errorHandler';
-import { Types } from './constants/Types';
+import { TypeNames } from './constants/TypeNames';
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use("/api", router);
 
-const business = container.get<IBusiness>(Types.IBusiness);
+const business = container.get<IBusiness>(TypeNames.IBusiness);
 
 new Controllers().registerRoutes(router, business);
 
