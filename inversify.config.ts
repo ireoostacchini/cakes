@@ -4,7 +4,7 @@ import Business from "./business";
 import IDb from "./db/IDb";
 import Db from "./db";
 import DbConnectionManager from "./db/dbConnectionManager";
-import { Types } from "./constants/types";
+import { Types } from "./constants/Types";
 
 
 const container = new Container();

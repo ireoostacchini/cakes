@@ -4,7 +4,7 @@ import CakesManager from "./cakesManager";
 import Db from "../db";
 import IBusiness from "./IBusiness";
 import IDb from "../db/IDb";
-import { Types } from "../constants/types";
+import { Types } from "../constants/Types";
 
 @injectable()
 class Business implements IBusiness {

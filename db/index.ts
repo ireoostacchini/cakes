@@ -3,7 +3,7 @@ import DbConnectionManager from "./dbConnectionManager";
 import IDb from "./IDb";
 import { injectable, inject } from "inversify";
 import IDbConnectionManager from "./IDbConnectionManager";
-import { Types } from "../constants/types";
+import { Types } from "../constants/Types";
 
 @injectable()
 class Db implements IDb {

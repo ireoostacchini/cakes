@@ -7,7 +7,7 @@ import IBusiness from './business/IBusiness';
 import Controllers from './controllers';
 import container from './inversify.config';
 import { errorHandler } from './helpers/errorHandler';
-import { Types } from './constants/types';
+import { Types } from './constants/Types';
 
 dotenv.config();
 
