@@ -3,12 +3,25 @@ import IBusiness from "../business/IBusiness";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
-import { createErrorResponseDto } from "../helpers/errorResponseDtoFactory";
+import { createErrorResponseDto, ErrorResponseDto } from "../helpers/errorResponseDtoFactory";
 import { validateUrl, validateRequiredProperty } from "../helpers/validation";
 
 interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
 }
+
+const validateNumber = (name: string, value: string): ErrorResponseDto | undefined => {
+
+    const number = Number(value);
+
+    if (isNaN(number)) {
+
+        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `${name} parameter of ${value} was invalid`);
+
+        return error;
+    }
+}
+
 
 class CakesController {
     registerRoutes(router: any, business: IBusiness) {
@@ -20,17 +33,13 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
-                    if (isNaN(cakeId)) {
+                    const error = validateNumber("id", req.params.id);
 
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `id parameter of ${req.params.id} was invalid`);
-
+                    if (error) {
                         return res
                             .status(HttpStatusCode.BAD_REQUEST)
                             .json(error);
-
                     }
-
-                    console.log(cakeId);
 
                     const cake = await business.cakesManager().getCake(cakeId);
 
@@ -70,14 +79,12 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
-                    if (isNaN(cakeId)) {
+                    const error = validateNumber("id", req.params.id);
 
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `id parameter of ${req.params.id} was invalid`);
-
+                    if (error) {
                         return res
                             .status(HttpStatusCode.BAD_REQUEST)
                             .json(error);
-
                     }
 
                     const cakes = await business.cakesManager().deleteCake(cakeId);
@@ -93,8 +100,6 @@ class CakesController {
             async (req: CreateCakeRequest, res: Response, next: any) => {
                 try {
                     const cake: CreateCakeDto = req?.body?.cake;
-
-                    //TODO: find a nicer way to validate!
 
                     //validate top-level object
                     if (!cake) {
