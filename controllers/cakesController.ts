@@ -1,17 +1,22 @@
 import { Request, Response } from "express";
-import { URL } from "url";
 import IBusiness from "../business/IBusiness";
 import { ErrorCode } from "../constants/ErrorCode";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
-import { createErrorResponseDto, ErrorResponseDto } from "../helpers/errorResponseDtoFactory";
+import { ValidationError } from "../errors/ValidationError";
+import { createErrorResponseDto } from "../helpers/errorResponseDtoFactory";
 import { validateNumber, validateRequiredProperties, validateUrl } from "../helpers/validation";
 
 interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
 }
 
+const validateYumFactor = (yumFactor: number) => {
+    if (isNaN(yumFactor) || yumFactor < 1 || yumFactor > 5) {
+        throw new ValidationError(ErrorCode.InvalidParameter, `invalid parameter: yumFactor must be netween 1 and 5`);
+    }
+}
 
 class CakesController {
     registerRoutes(router: any, business: IBusiness) {
@@ -21,9 +26,9 @@ class CakesController {
             async (req: Request, res: Response, next: any) => {
                 try {
 
-                    const cakeId = Number(req.params.id);
-
                     validateNumber("id", req.params.id);
+
+                    const cakeId = Number(req.params.id);
 
                     const cake = await business.cakesManager().getCake(cakeId);
 
@@ -62,11 +67,11 @@ class CakesController {
             async (req: Request, res: Response, next: any) => {
                 try {
 
-                    const cakeId = Number(req.params.id);
-
                     validateNumber("id", req.params.id);
 
-                    const cakes = await business.cakesManager().deleteCake(cakeId);
+                    const cakeId = Number(req.params.id);
+
+                    await business.cakesManager().deleteCake(cakeId);
 
                     res.status(HttpStatusCode.OK).json({});
                 } catch (err) {
@@ -103,13 +108,7 @@ class CakesController {
                     //validate yumFactor - must be 1 to 5
                     const yumFactor = Number(cake.yumFactor);
 
-                    if (isNaN(yumFactor) || yumFactor < 1 || yumFactor > 5) {
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `invalid parameter: yumFactor must be netween 1 and 5`);
-
-                        return res
-                            .status(HttpStatusCode.BAD_REQUEST)
-                            .json(error);
-                    }
+                    validateYumFactor(yumFactor);
 
                     const addedCake = await business.cakesManager().addCake(cake);
 
