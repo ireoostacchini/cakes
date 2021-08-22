@@ -8,14 +8,14 @@ import { createErrorResponseDto } from "./errorResponseDtoFactory";
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
-    const genericErrorMessage = "Sorry, we seem to have a problem. Please try again.";
-
     console.error(err);
 
-    //we're not exposing all CustomErrors now, although we could choose to do so (or perhaps have smething like a PublicCustomError) 
+    const genericErrorMessage = "Sorry, we seem to have a problem. Please try again.";
+
+    //we decide to expose the message for validation errors
     if (err instanceof ValidationError) {
 
-        const error = createErrorResponseDto(ErrorCode.InvalidParameter, err.message);
+        const error = createErrorResponseDto(err.code, err.message);
 
         return res
             .status(HttpStatusCode.BAD_REQUEST)
@@ -24,7 +24,9 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
     if (err instanceof CustomError) {
 
-        const error = createErrorResponseDto(ErrorCode.InternalError, genericErrorMessage);
+        const error = createErrorResponseDto(
+            ErrorCode.InternalError,
+            isDevelopment() ? err.message : genericErrorMessage);
 
         return res
             .status(HttpStatusCode.INTERNAL_ERROR)
