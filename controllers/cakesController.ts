@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
+import { URL } from "url";
 import IBusiness from "../business/IBusiness";
 import { ErrorCode } from "../constants/ErrorCode";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { createErrorResponseDto, ErrorResponseDto } from "../helpers/errorResponseDtoFactory";
-import { validateUrl, validateRequiredProperty } from "../helpers/validation";
 
 interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
@@ -31,31 +31,24 @@ const validateNumber = (name: string, value: string) => {
     const number = Number(value);
 
     if (isNaN(number)) {
-
         throw new ValidationError(ErrorCode.InvalidParameter, `${name} parameter of ${value} was invalid`);
     }
 }
 
-const validateRequiredProperties = (object: any, propertyNames: string[]): ErrorResponseDto | undefined => {
+const validateRequiredProperties = (object: any, propertyNames: string[]) => {
 
     for (const paramName of propertyNames) {
-        try {
-            validateRequiredProperty(object, paramName);
-        } catch (err) {
-            return createErrorResponseDto(ErrorDtoCode.ParameterMissing, `parameter missing: ${paramName}`);
+        if (!object[paramName]) {
+            throw new ValidationError(ErrorCode.ParameterMissing, `parameter missing: ${paramName}`);
         }
     }
 }
 
-const validatePropertyAsUrl = (name: string, value: string): ErrorResponseDto | undefined => {
-
+const validateUrl = (name: string, value: string) => {
     try {
-        validateUrl(value);
+        new URL(value);
     } catch (err) {
-
-        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `invalid parameter: ${name} must be a valid URL`);
-
-        return error;
+        throw new ValidationError(ErrorCode.InvalidParameter, `invalid parameter: ${name} must be a valid URL`);
     }
 }
 
@@ -120,16 +113,6 @@ class CakesController {
 
                     res.status(HttpStatusCode.OK).json({});
                 } catch (err) {
-
-                    if (err instanceof ValidationError) {
-
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, err.message);
-
-                        return res
-                            .status(HttpStatusCode.BAD_REQUEST)
-                            .json(error);
-                    }
-
                     next(err);
                 }
             });
@@ -150,27 +133,15 @@ class CakesController {
                     }
 
                     //validate required params 
-                    const requiredError = validateRequiredProperties(cake, [
+                    validateRequiredProperties(cake, [
                         "name",
                         "comment",
                         "imageUrl",
                         "yumFactor"
                     ]);
 
-                    if (requiredError) {
-                        return res
-                            .status(HttpStatusCode.BAD_REQUEST)
-                            .json(requiredError);
-                    }
-
                     //validate imageUrl 
-                    const urlError = validatePropertyAsUrl("imageUrl", cake.imageUrl);
-
-                    if (urlError) {
-                        return res
-                            .status(HttpStatusCode.BAD_REQUEST)
-                            .json(urlError);
-                    }
+                    validateUrl("imageUrl", cake.imageUrl);
 
                     //validate yumFactor - must be 1 to 5
                     const yumFactor = Number(cake.yumFactor);
