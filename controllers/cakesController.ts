@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import IBusiness from "../business/IBusiness";
 import { ErrorCode } from "../constants/ErrorCode";
-import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { ValidationError } from "../errors/ValidationError";
@@ -14,7 +13,7 @@ interface CreateCakeRequest extends Request {
 
 const validateYumFactor = (yumFactor: number) => {
     if (isNaN(yumFactor) || yumFactor < 1 || yumFactor > 5) {
-        throw new ValidationError(ErrorCode.InvalidParameter, `invalid parameter: yumFactor must be netween 1 and 5`);
+        throw new ValidationError(ErrorCode.InvalidParameter, `invalid parameter: yumFactor must be between 1 and 5`);
     }
 }
 
@@ -87,7 +86,7 @@ class CakesController {
 
                     //validate top-level object
                     if (!cake) {
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, "invalid parameter - top-level 'cake' object required");
+                        const error = createErrorResponseDto(ErrorCode.InvalidParameter, "invalid parameter - top-level 'cake' object required");
 
                         return res
                             .status(HttpStatusCode.BAD_REQUEST)

@@ -1,11 +1,11 @@
-import { ErrorDtoCode } from "../constants/ErrorDtoCode";
+import { ErrorCode } from "../constants/ErrorCode";
 
 export interface ErrorResponseDto {
+    code: ErrorCode;
     message: string;
-    code: ErrorDtoCode;
 }
 
-export function createErrorResponseDto(code: ErrorDtoCode, message: string) {
+export function createErrorResponseDto(code: ErrorCode, message: string) {
 
     const result: ErrorResponseDto = {
         code,
