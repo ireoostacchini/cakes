@@ -22,6 +22,29 @@ const validateNumber = (name: string, value: string): ErrorResponseDto | undefin
     }
 }
 
+const validateRequiredProperties = (object: any, propertyNames: string[]): ErrorResponseDto | undefined => {
+
+    for (const paramName of propertyNames) {
+        try {
+            validateRequiredProperty(object, paramName);
+        } catch (err) {
+            return createErrorResponseDto(ErrorDtoCode.ParameterMissing, `parameter missing: ${paramName}`);
+        }
+    }
+}
+
+const validatePropertyAsUrl = (name: string, value: string): ErrorResponseDto | undefined => {
+
+    try {
+        validateUrl(value);
+    } catch (err) {
+
+        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `invalid parameter: ${name} must be a valid URL`);
+
+        return error;
+    }
+}
+
 
 class CakesController {
     registerRoutes(router: any, business: IBusiness) {
@@ -111,33 +134,26 @@ class CakesController {
                     }
 
                     //validate required params 
-                    for (const paramName of [
+                    const requiredError = validateRequiredProperties(cake, [
                         "name",
                         "comment",
                         "imageUrl",
                         "yumFactor"
-                    ]) {
-                        try {
-                            validateRequiredProperty(cake, paramName);
-                        } catch (err) {
-                            const error = createErrorResponseDto(ErrorDtoCode.ParameterMissing, `parameter missing: ${paramName}`);
+                    ]);
 
-                            return res
-                                .status(HttpStatusCode.BAD_REQUEST)
-                                .json(error);
-                        }
+                    if (requiredError) {
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(requiredError);
                     }
 
                     //validate imageUrl 
-                    try {
-                        validateUrl(cake.imageUrl)
-                    } catch (err) {
+                    const urlError = validatePropertyAsUrl("imageUrl", cake.imageUrl);
 
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `invalid parameter: imageUrl must be a valid URL`);
-
+                    if (urlError) {
                         return res
                             .status(HttpStatusCode.BAD_REQUEST)
-                            .json(error);
+                            .json(urlError);
                     }
 
                     //validate yumFactor - must be 1 to 5
