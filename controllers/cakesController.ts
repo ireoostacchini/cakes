@@ -6,54 +6,11 @@ import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
 import { createErrorResponseDto, ErrorResponseDto } from "../helpers/errorResponseDtoFactory";
+import { validateNumber, validateRequiredProperties, validateUrl } from "../helpers/validation";
 
 interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
 }
-
-export class CustomError extends Error {
-
-    code: ErrorCode;
-
-    constructor(code: ErrorCode, message: string) {
-
-        super(message);
-        this.name = "Error";
-        this.code = code;
-    }
-}
-
-export class ValidationError extends CustomError {
-};
-
-const validateNumber = (name: string, value: string) => {
-
-    const number = Number(value);
-
-    if (isNaN(number)) {
-        throw new ValidationError(ErrorCode.InvalidParameter, `${name} parameter of ${value} was invalid`);
-    }
-}
-
-const validateRequiredProperties = (object: any, propertyNames: string[]) => {
-
-    for (const paramName of propertyNames) {
-        if (!object[paramName]) {
-            throw new ValidationError(ErrorCode.ParameterMissing, `parameter missing: ${paramName}`);
-        }
-    }
-}
-
-const validateUrl = (name: string, value: string) => {
-    try {
-        new URL(value);
-    } catch (err) {
-        throw new ValidationError(ErrorCode.InvalidParameter, `invalid parameter: ${name} must be a valid URL`);
-    }
-}
-
-
-
 
 
 class CakesController {

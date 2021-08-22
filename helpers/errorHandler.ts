@@ -1,9 +1,9 @@
-import { config } from "dotenv";
 import { ErrorRequestHandler } from "express";
 import { ErrorCode } from "../constants/ErrorCode";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
-import { CustomError, ValidationError } from "../controllers/cakesController";
+import { CustomError } from "../errors/CustomError";
+import { ValidationError } from "../errors/ValidationError";
 import { isDevelopment } from "./configHelper";
 import { createErrorResponseDto } from "./errorResponseDtoFactory";
 
