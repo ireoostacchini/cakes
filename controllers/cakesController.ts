@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import IBusiness from "../business/IBusiness";
+import { ErrorCode } from "../constants/ErrorCode";
 import { ErrorDtoCode } from "../constants/ErrorDtoCode";
 import { HttpStatusCode } from "../constants/HttpStatusCode";
 import CreateCakeDto from "../dto/CreateCakeDto";
@@ -10,15 +11,28 @@ interface CreateCakeRequest extends Request {
     cake: CreateCakeDto;
 }
 
-const validateNumber = (name: string, value: string): ErrorResponseDto | undefined => {
+export class CustomError extends Error {
+
+    code: ErrorCode;
+
+    constructor(code: ErrorCode, message: string) {
+
+        super(message);
+        this.name = "Error";
+        this.code = code;
+    }
+}
+
+export class ValidationError extends CustomError {
+};
+
+const validateNumber = (name: string, value: string) => {
 
     const number = Number(value);
 
     if (isNaN(number)) {
 
-        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, `${name} parameter of ${value} was invalid`);
-
-        return error;
+        throw new ValidationError(ErrorCode.InvalidParameter, `${name} parameter of ${value} was invalid`);
     }
 }
 
@@ -46,6 +60,9 @@ const validatePropertyAsUrl = (name: string, value: string): ErrorResponseDto | 
 }
 
 
+
+
+
 class CakesController {
     registerRoutes(router: any, business: IBusiness) {
 
@@ -56,13 +73,7 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
-                    const error = validateNumber("id", req.params.id);
-
-                    if (error) {
-                        return res
-                            .status(HttpStatusCode.BAD_REQUEST)
-                            .json(error);
-                    }
+                    validateNumber("id", req.params.id);
 
                     const cake = await business.cakesManager().getCake(cakeId);
 
@@ -72,6 +83,7 @@ class CakesController {
 
                     res.status(HttpStatusCode.OK).json(result);
                 } catch (err) {
+
                     next(err);
                 }
             });
@@ -102,18 +114,22 @@ class CakesController {
 
                     const cakeId = Number(req.params.id);
 
-                    const error = validateNumber("id", req.params.id);
-
-                    if (error) {
-                        return res
-                            .status(HttpStatusCode.BAD_REQUEST)
-                            .json(error);
-                    }
+                    validateNumber("id", req.params.id);
 
                     const cakes = await business.cakesManager().deleteCake(cakeId);
 
                     res.status(HttpStatusCode.OK).json({});
                 } catch (err) {
+
+                    if (err instanceof ValidationError) {
+
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, err.message);
+
+                        return res
+                            .status(HttpStatusCode.BAD_REQUEST)
+                            .json(error);
+                    }
+
                     next(err);
                 }
             });
@@ -126,7 +142,7 @@ class CakesController {
 
                     //validate top-level object
                     if (!cake) {
-                        const error = createErrorResponseDto(ErrorDtoCode.InvalidRequest, "invalid request - top-level 'cake' object required");
+                        const error = createErrorResponseDto(ErrorDtoCode.InvalidParameter, "invalid parameter - top-level 'cake' object required");
 
                         return res
                             .status(HttpStatusCode.BAD_REQUEST)
