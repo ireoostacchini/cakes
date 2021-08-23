@@ -1,4 +1,5 @@
 import CakeDto from "../dto/CakeDto";
+import { validateRequiredProperties, validateUrl } from "./validation";
 
 const createTestCakeDto = () => {
     const dto: CakeDto = {
@@ -11,14 +12,14 @@ const createTestCakeDto = () => {
 
     return dto;
 }
-/*
+
 describe("validation helper", () => {
 
-    it("should validate object with required property ", () => {
+    it("should validate object with required properties ", () => {
 
         const dto = createTestCakeDto();
 
-        validateRequiredProperty(dto, "name");
+        validateRequiredProperties(dto, ["name", "comment"]);
     });
 
     it("should fail validation of obejct with empty required property ", () => {
@@ -28,7 +29,7 @@ describe("validation helper", () => {
         dto.name = "";
 
         expect(() => {
-            validateRequiredProperty(dto, "name");
+            validateRequiredProperties(dto, ["name", "comment"]);
         }).toThrow();
     });
 
@@ -37,7 +38,7 @@ describe("validation helper", () => {
         const dto = {};
 
         expect(() => {
-            validateRequiredProperty(dto, "name");
+            validateRequiredProperties(dto, ["name", "comment"]);
         }).toThrow();
     });
 
@@ -45,11 +46,10 @@ describe("validation helper", () => {
 
         const dto = createTestCakeDto();
 
-        validateUrl(dto.imageUrl);
+        validateUrl("myProperty", dto.imageUrl);
 
         expect(() => {
-            validateUrl("not a URL");
+            validateUrl("myProperty", "not a URL");
         }).toThrow();
     });
 });
-*/
