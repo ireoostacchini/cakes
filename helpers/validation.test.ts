@@ -1,5 +1,5 @@
 import CakeDto from "../dto/CakeDto";
-import { validateRequiredProperties, validateUrl } from "./validation";
+import { validateNumber, validateRequiredProperties, validateUrl } from "./validation";
 
 const createTestCakeDto = () => {
     const dto: CakeDto = {
@@ -8,14 +8,29 @@ const createTestCakeDto = () => {
         comment: "a comment",
         imageUrl: "http://an/image.jpg",
         yumFactor: 2
-    }
-
+    };
     return dto;
-}
+};
 
 describe("validation helper", () => {
 
-    it("should validate object with required properties ", () => {
+    it("should validate number", () => {
+
+        const dto = createTestCakeDto();
+
+        validateNumber("yumFactor", "8");
+    });
+
+    it("should fail validation for non-number", () => {
+
+        const dto = createTestCakeDto();
+
+        expect(() => {
+            validateNumber("yumFactor", "xx");
+        }).toThrow();
+    });
+
+    it("should validate object with required properties", () => {
 
         const dto = createTestCakeDto();
 
