@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "029cae3f-7108-4961-b5c7-6ef6f8ada13d",
-		"name": "cakes-local",
+		"name": "cakes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,12 +11,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -31,16 +29,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/cakes/26",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes/27",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes",
-						"26"
+						"27"
 					]
 				}
 			},
@@ -52,12 +48,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/cakes/999",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes/999",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes",
@@ -68,59 +62,15 @@
 			"response": []
 		},
 		{
-			"name": "Get cake xxx",
+			"name": "Get cake - invalid id",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/cakes/xxx",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes/xxx",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
-					"path": [
-						"api",
-						"cakes",
-						"xxx"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete cake",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/cakes/30",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"cakes",
-						"30"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete cake - invalid id",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/cakes/xxx",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes",
@@ -145,12 +95,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -174,12 +122,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -203,12 +149,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -232,12 +176,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -261,12 +203,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -290,12 +230,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
@@ -319,15 +257,51 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/cakes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/cakes",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"cakes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete cake",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/cakes/47",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cakes",
+						"47"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete cake - invalid id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/cakes/xxx",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cakes",
+						"xxx"
 					]
 				}
 			},
