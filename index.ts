@@ -3,11 +3,11 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import methodOverride from "method-override";
-import IBusiness from './business/IBusiness';
 import Controllers from './controllers';
-import container from './inversify.config';
 import { errorHandler } from './helpers/errorHandler';
-import { TypeNames } from './constants/TypeNames';
+import Business from './business';
+import Db from './db';
+import DbConnectionManager from './db/dbConnectionManager';
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use("/api", router);
 
-const business = container.get<IBusiness>(TypeNames.IBusiness);
+const business = new Business(new Db(new DbConnectionManager()));
 
 new Controllers().registerRoutes(router, business);
 

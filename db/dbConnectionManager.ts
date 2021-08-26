@@ -1,9 +1,7 @@
 import config from "../config";
 import knex from "knex";
 import IDbConnectionManager from "./IDbConnectionManager";
-import { injectable } from "inversify";
 
-@injectable()
 class DbConnectionManager implements IDbConnectionManager {
 
   //we reuse one connection for all requests - otherwise open conections mount up
